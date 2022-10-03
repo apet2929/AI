@@ -10,7 +10,7 @@ def sigmoid(arr):
     a = np.squeeze(np.asarray(arr))
     out = np.zeros(len(a))
     for i, elem in enumerate(a):
-        out[i] = 1/(1 + math.pow(math.e, -elem))
+        out[i] = 1 / (1 + math.pow(math.e, -elem))
     return out
 
 
@@ -51,7 +51,8 @@ weights = [np.random.uniform(-1, 1, (layer_size, inp_nodes)),
            np.random.uniform(-1, 1, (layer_size, layer_size)),
            np.random.uniform(-1, 1, (output_nodes, layer_size))]
 
-biases = [np.random.uniform(-1, 1, layer_size), np.random.uniform(-1, 1, layer_size), np.random.uniform(-1, 1, output_nodes)]
+biases = [np.random.uniform(-1, 1, layer_size), np.random.uniform(-1, 1, layer_size),
+          np.random.uniform(-1, 1, output_nodes)]
 
 def predict(image):
     a[1] = feed_forward(image, weights[0], biases[0])
