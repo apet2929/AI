@@ -6,6 +6,35 @@ from PIL import Image
 import numpy as np
 
 
+class Network:
+    def __init__(self):
+        self.layer_size = 16
+        self.input_size = 28*28
+        self.output_size = 10
+        self.num_layers = 4
+        self.input_layer = np.zeros(784)
+        self.nodes = [
+            self.input_layer, #input
+            np.zeros(self.layer_size), #hidden 1
+            np.zeros(self.layer_size), # hidden 2
+            np.zeros(10) # output
+        ]
+        self.weights = [
+            np.random.uniform(-1, 1, (self.layer_size, self.input_size)), # 784 x 16
+            np.random.uniform(-1, 1, (self.layer_size, self.layer_size)), # 16 x 16
+            np.random.uniform(-1, 1, (self.output_size, self.layer_size)) # 16 x 10
+        ]
+        self.biases = [
+            np.random.uniform(-1, 1, self.layer_size), np.random.uniform(-1, 1, self.layer_size),
+            np.random.uniform(-1, 1, self.output_size)
+        ]
+
+    def predict(self, image):
+        layer_input = image
+        for i in range(1,self.num_layers):
+            layer_input = feed_forward(layer_input, self.weights[i-1], self.biases[i-1])
+            self.nodes[i] = layer_input
+
 def sigmoid(arr):
     a = np.squeeze(np.asarray(arr))
     out = np.zeros(len(a))
@@ -78,14 +107,12 @@ def train(batch):
     for i, image in enumerate(batch):
         output = predict(image)
 
-        # =grad_desc(dC_da_first())
+        =grad_desc(dC_da_first())
         for i in range(3):
-            # =grad_desc(dC_da_gen())
+            =grad_desc(dC_da_gen())
 
-        # error +=
+        error +=
     error /= len(batch)
-
-
 
 
 # man func for calculating the gradient descent at layer L
@@ -109,12 +136,27 @@ def grad_desc(dC_da):
 
     return out
 
+def calc_gradient(dC_da):
+    num_of_weights = len(weights[current_layer])
+    num_of_biases = len(biases[current_layer])
+    out = np.zeros(num_of_weights + num_of_biases)
+    # TODO : Reference stored values of z calculated while running
+    _z = z(a[current_layer], weights[current_layer], biases[current_layer])
+    # pre_calculated = da/dz * dC/da
+    pre_calculated = dsigmoid(_z) * dC_da
+    for i, w in enumerate(weights[current_layer]):
+        out[2 * i] = dC_dw(pre_calculated)
+    for i, b in enumerate(biases[current_layer]):
+        out[2 * i + 1] = dC_db(pre_calculated)  # might overlap
+    return out
+
 
 # nodes, expected = np.array()
 def dC_da_gen(nodes, pre_calculated) -> float:
     s = 0
     for i in range(len(nodes)):
-        pass
+        s += (weights[current_layer][i] * pre_calculated)
+
 
 
 # nodes, expected = np.array()
@@ -129,10 +171,8 @@ def dC_dw(pre_calculated) -> float:
 
 # calculates dz/dw
 def dz_dw(nodes) -> float:
-    s = 0
-    for node in nodes:
-        s += node
-    return s
+    return nodes.sum()
+
 
 
 def dC_db(pre_calculated: float) -> float:
