@@ -122,19 +122,8 @@ def grad_desc(dC_da):
     # dc_db
     # some_num*dc_db
     # ]
-    num_of_weights = len(weights[current_layer])
-    num_of_biases = len(biases[current_layer])
-    out = np.zeros(len(num_of_weights + num_of_biases))
-    # pre_calculated = da/dz * dC/da
-    # TODO : Reference stored values of z calculated while running
-    _z = z(a[current_layer], weights[current_layer], biases[current_layer])
-    pre_calculated = dsigmoid(z) * dC_da
-    for i, w in enumerate(weights[current_layer]):
-        out[2 * i] = dC_dw(pre_calculated)
-    for i, b in enumerate(biases[current_layer]):
-        out[2 * i + 1] = dC_db(pre_calculated)  # might overlap
+    pass
 
-    return out
 
 def calc_gradient(dC_da):
     num_of_weights = len(weights[current_layer])
@@ -166,7 +155,7 @@ def dC_da_first(nodes, expected) -> float:
 
 # calculates dC/dw
 def dC_dw(pre_calculated) -> float:
-    return dz_dw(a[current_layer]) * pre_calculated
+    return dz_dw(a[current_layer-1]) * pre_calculated
 
 
 # calculates dz/dw
